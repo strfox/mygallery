@@ -1,0 +1,69 @@
+<!--
+  ~ Copyright (C) 2019 Michel Faria
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~
+  -->
+
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="en">
+
+<head>
+    <!-- Meta -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Title -->
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">MyGallery</title>
+
+    <!-- CSS -->
+    <link th:href="@{/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/app.css}"/>
+    <th:block layout:fragment="css"/>
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="/">MyGallery</a>
+
+                <th:block layout:fragment="navbarContent"/>
+            </div>
+        </div>
+    </nav>
+    <div class="main_container">
+        <th:block layout:fragment="mainContent"/>
+    </div>
+</div>
+</body>
+
+
+<!-- Scripts -->
+<script th:src="@{/lib/jquery/jquery.js}"></script>
+<script th:src="@{/lib/bootstrap/js/bootstrap.js}"></script>
+<th:block layout:fragment="additionalScripts"/>
+
+</html>
