@@ -20,8 +20,10 @@ package io.github.michelfaria.mygallery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication(scanBasePackages = "io.github.michelfaria.mygallery")
+@PropertySource("file:./mygallery.properties")
 public class MyGalleryApplication {
 
     public static void main(String[] args) {

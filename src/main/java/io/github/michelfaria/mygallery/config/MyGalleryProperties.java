@@ -21,6 +21,7 @@ package io.github.michelfaria.mygallery.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
@@ -29,7 +30,6 @@ import javax.validation.constraints.NotNull;
 @Validated
 @Setter
 @Getter
-@SuppressWarnings("null")
 public class MyGalleryProperties {
     @NotNull
     private String galleryPath;
