@@ -50,8 +50,6 @@ public class GalleryService implements IGalleryService {
     private IFileListingService fileListingService;
     @Autowired
     private IThumbnailService thumbnailService;
-    @Autowired
-    private IPathSecuringService pathSecuringService;
 
     @Override
     public GalleryDirectory fetchDirectory(Path securePath, int pageNo) throws IOException {
