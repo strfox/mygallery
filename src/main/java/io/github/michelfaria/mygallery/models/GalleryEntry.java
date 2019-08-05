@@ -18,48 +18,30 @@
 
 package io.github.michelfaria.mygallery.models;
 
-import io.github.michelfaria.mygallery.enums.EntryType;
 import lombok.Data;
+import lombok.experimental.Delegate;
 import org.springframework.lang.Nullable;
-
-import java.nio.file.Path;
 
 @Data
 public class GalleryEntry {
+
+    @Delegate(types = DirectoryEntry.class)
     private DirectoryEntry directoryEntry;
+
+    /**
+     * Thumbnail data in Base 64
+     */
     private @Nullable
     String thumbnail64;
+
+    /**
+     * Thumbnail path relative to gallery root as String
+     */
+    private @Nullable
+    String thumbnailPath;
+
+    /**
+     * Path relative to gallery root as String
+     */
     private String galleryPath;
-
-    public GalleryEntry(DirectoryEntry directoryEntry, @Nullable String thumbnail64, String galleryPath) {
-        super();
-        this.directoryEntry = directoryEntry;
-        this.thumbnail64 = thumbnail64;
-        this.galleryPath = galleryPath;
-    }
-
-    public String getName() {
-        return getDirectoryEntry().getName();
-    }
-
-    public EntryType getType() {
-        return getDirectoryEntry().getType();
-    }
-
-    public Path getAbsolutePath() {
-        return getDirectoryEntry().getPath();
-    }
-
-    public void setName(String name) {
-        getDirectoryEntry().setName(name);
-    }
-
-    public void setType(EntryType type) {
-        getDirectoryEntry().setType(type);
-    }
-
-    public void setAbsolutePath(Path absolutePath) {
-        getDirectoryEntry().setPath(absolutePath);
-    }
-
 }

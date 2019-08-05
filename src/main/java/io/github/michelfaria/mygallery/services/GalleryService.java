@@ -63,23 +63,31 @@ public class GalleryService implements IGalleryService {
         }
         var galleryEntries = dirEntries.stream()
                 .skip((pageNo - 1) * entriesPerPage)
-                .map(e -> {
-                    var galleryPath = FilenameUtils.separatorsToUnix(
+                .map(dirEntry -> {
+                    final var galleryPath = FilenameUtils.separatorsToUnix(
                             Paths.get(properties.getGalleryPath())
-                                    .relativize(e.getPath())
+                                    .relativize(dirEntry.getPath())
                                     .toString());
-                    if (e.getType() == FILE) {
+                    final var galEntry = new GalleryEntry();
+                    galEntry.setDirectoryEntry(dirEntry);
+                    galEntry.setName(dirEntry.getName());
+                    galEntry.setGalleryPath(galleryPath);
+
+                    if (dirEntry.getType() == FILE) {
                         try {
-                            var thumbnail = thumbnailService.thumbnail(e.getPath());
-                            var thumbnailBytes = thumbnail.toByteArray();
-                            var encodedThumbnail = Base64.getEncoder().encode(thumbnailBytes);
-                            return new GalleryEntry(e, new String(encodedThumbnail), galleryPath);
+                            galEntry.setThumbnail64(
+                                    new String(Base64
+                                            .getEncoder()
+                                            .encode(thumbnailService
+                                                    .thumbnail(dirEntry.getPath())
+                                                    .toByteArray())));
                         } catch (UnsupportedFormatException ignored) {
                         } catch (Exception ex) {
-                            LOGGER.error("Error while rendering thumbnail (" + e.getPath() + ")", ex);
+                            LOGGER.error("Error while rendering thumbnail (" + dirEntry.getPath() + ")", ex);
                         }
                     }
-                    return new GalleryEntry(e, null, galleryPath);
+                    return galEntry;
+
                 })
                 .limit(entriesPerPage)
                 .collect(Collectors.toList());
