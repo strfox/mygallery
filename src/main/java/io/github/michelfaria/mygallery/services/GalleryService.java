@@ -23,6 +23,8 @@ import io.github.michelfaria.mygallery.exceptions.NotAFileException;
 import io.github.michelfaria.mygallery.models.GalleryEntry;
 import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,8 @@ import static io.github.michelfaria.mygallery.enums.EntryType.FILE;
 
 @Service
 public class GalleryService implements IGalleryService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GalleryService.class);
 
     @Autowired
     private MyGalleryProperties properties;
@@ -71,9 +75,8 @@ public class GalleryService implements IGalleryService {
                             var encodedThumbnail = Base64.getEncoder().encode(thumbnailBytes);
                             return new GalleryEntry(e, new String(encodedThumbnail), galleryPath);
                         } catch (UnsupportedFormatException ignored) {
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                            throw new RuntimeException(ex);
+                        } catch (Exception ex) {
+                            LOGGER.error("Error while rendering thumbnail (" + e.getPath() + ")", ex);
                         }
                     }
                     return new GalleryEntry(e, null, galleryPath);
