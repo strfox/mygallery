@@ -44,17 +44,22 @@
         </ol>
     </nav>
     <th:block th:if="${entries}" th:assert="${totalPages != null}">
-        <span>Pages: </span>
-        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
-		<span th:if="${i == page}">
-			[[${i}]]
-		</span>
-            <a th:unless="${i == page}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"
-               th:inline="text">
-                [[${i}]]
-            </a>
-            &nbsp;
+        <th:block th:fragment="pageNumbers">
+            <th>
+                <span>Pages: </span>
+                <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+                    <span th:if="${i == page}">
+                        [[${i}]]
+                    </span>
+                    <a th:unless="${i == page}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"
+                       th:inline="text">
+                        [[${i}]]
+                    </a>
+                    &nbsp;
+                </th:block>
+            </th>
         </th:block>
+        <!-- Entries -->
         <div class="row">
             <th:block th:each="entry: ${entries}">
                 <a th:href="@{'?path='+${entry.getGalleryPathWeb()}}">
@@ -73,10 +78,12 @@
                 </a>
             </th:block>
         </div>
+        <th:block th:replace="gallery/main :: pageNumbers"/>
     </th:block>
     <th:block th:unless="${entries}"
               th:assert="${filePath} != null"
               th:with="supportedImage=${filePath.matches('^.+\.(png|jpe?g|gif|svg|bmp)')}">
+        <!-- Display File -->
         <img th:if="${supportedImage}" th:src="@{${filePath}}" alt="Image"/>
         <span th:unless="${supportedImage}">File format not supported :(</span>
     </th:block>

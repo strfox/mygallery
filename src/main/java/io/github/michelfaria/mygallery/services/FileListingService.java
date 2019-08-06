@@ -45,6 +45,7 @@ public class FileListingService implements IFileListingService {
                         p.getFileName().toString(),
                         entryType(p),
                         p))
+                .filter(p -> !p.getName().startsWith("."))
                 .collect(Collectors.toList());
     }
 

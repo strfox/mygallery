@@ -44,7 +44,7 @@ import static io.github.michelfaria.mygallery.config.MvcConfig.GALLERY_STATIC;
 public class CachingThumbnailService implements ICachingThumbnailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CachingThumbnailService.class);
-    private static final String THUMBNAIL_CACHE_FOLDERNAME = ".thumbnail_cache";
+    public static final String THUMBNAIL_CACHE_FOLDERNAME = ".thumbnail_cache";
     private static final String THUMBNAIL_FORMAT = "jpg";
     private static final String THUMBNAIL_EXTENSION = "." + THUMBNAIL_FORMAT;
 

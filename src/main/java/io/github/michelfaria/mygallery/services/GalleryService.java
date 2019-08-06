@@ -20,6 +20,7 @@ package io.github.michelfaria.mygallery.services;
 
 import io.github.michelfaria.mygallery.config.MyGalleryProperties;
 import io.github.michelfaria.mygallery.exceptions.NotAFileException;
+import io.github.michelfaria.mygallery.exceptions.SuspiciousPathException;
 import io.github.michelfaria.mygallery.models.GalleryEntry;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
 import static io.github.michelfaria.mygallery.config.MvcConfig.GALLERY_STATIC;
 import static io.github.michelfaria.mygallery.enums.EntryType.DIRECTORY;
 import static io.github.michelfaria.mygallery.enums.EntryType.FILE;
+import static io.github.michelfaria.mygallery.services.CachingThumbnailService.THUMBNAIL_CACHE_FOLDERNAME;
 
 @Service
 public class GalleryService implements IGalleryService {
@@ -52,6 +54,12 @@ public class GalleryService implements IGalleryService {
 
     @Override
     public GalleryDirectory fetchDirectory(Path securePath, int pageNo) throws IOException {
+        if (Paths.get(properties.getGalleryPath())
+                .relativize(securePath)
+                .startsWith(THUMBNAIL_CACHE_FOLDERNAME)) {
+            throw new SuspiciousPathException("Tried to fetch thumbnail cache");
+        }
+
         var entriesPerPage = properties.getEntriesPerPage();
         var dirEntries = fileListingService.listDir(securePath);
         var totalPages = (int) Math.ceil((double) dirEntries.size() / (double) entriesPerPage);
