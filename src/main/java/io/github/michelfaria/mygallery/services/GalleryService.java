@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static io.github.michelfaria.mygallery.config.MvcConfig.GALLERY_STATIC;
+import static io.github.michelfaria.mygallery.enums.EntryType.DIRECTORY;
 import static io.github.michelfaria.mygallery.enums.EntryType.FILE;
 
 @Service
@@ -58,6 +59,15 @@ public class GalleryService implements IGalleryService {
             return new GalleryDirectory(new ArrayList<>(), totalPages);
         }
         var galleryEntries = dirEntries.stream()
+                .sorted((o1, o2) -> {
+                    if (o1.getType() == DIRECTORY && o2.getType() != DIRECTORY) {
+                        return -1;
+                    } else if (o1.getType() == o2.getType()) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                })
                 .skip((pageNo - 1) * entriesPerPage)
                 .map(dirEntry -> {
                     final var entryPathWeb = FilenameUtils.separatorsToUnix(
