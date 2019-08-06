@@ -29,7 +29,6 @@ import java.nio.file.Path;
 
 @Service
 public class ThumbnailService implements IThumbnailService {
-
     @Override
     public FastByteArrayOutputStream thumbnail(Path securePath) throws IOException {
         if (!Files.isRegularFile(securePath)) {

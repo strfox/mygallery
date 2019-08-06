@@ -21,7 +21,6 @@ package io.github.michelfaria.mygallery.services;
 import io.github.michelfaria.mygallery.config.MyGalleryProperties;
 import io.github.michelfaria.mygallery.exceptions.NotAFileException;
 import io.github.michelfaria.mygallery.models.GalleryEntry;
-import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.stream.Collectors;
 
 import static io.github.michelfaria.mygallery.config.MvcConfig.GALLERY_STATIC;
@@ -49,7 +47,7 @@ public class GalleryService implements IGalleryService {
     @Autowired
     private IFileListingService fileListingService;
     @Autowired
-    private IThumbnailService thumbnailService;
+    private ICachingThumbnailService thumbnailService;
 
     @Override
     public GalleryDirectory fetchDirectory(Path securePath, int pageNo) throws IOException {
@@ -62,24 +60,20 @@ public class GalleryService implements IGalleryService {
         var galleryEntries = dirEntries.stream()
                 .skip((pageNo - 1) * entriesPerPage)
                 .map(dirEntry -> {
-                    final var galleryPath = FilenameUtils.separatorsToUnix(
+                    final var entryPathWeb = FilenameUtils.separatorsToUnix(
                             Paths.get(properties.getGalleryPath())
                                     .relativize(dirEntry.getPath())
                                     .toString());
                     final var galEntry = new GalleryEntry();
                     galEntry.setDirectoryEntry(dirEntry);
                     galEntry.setName(dirEntry.getName());
-                    galEntry.setGalleryPath(galleryPath);
+                    galEntry.setGalleryPathWeb(entryPathWeb);
 
                     if (dirEntry.getType() == FILE) {
                         try {
-                            galEntry.setThumbnail64(
-                                    new String(Base64
-                                            .getEncoder()
-                                            .encode(thumbnailService
-                                                    .thumbnail(dirEntry.getPath())
-                                                    .toByteArray())));
-                        } catch (UnsupportedFormatException ignored) {
+                            galEntry.setThumbnailPathWeb(thumbnailService
+                                    .thumbnail(dirEntry.getPath())
+                                    .orElse(null));
                         } catch (Exception ex) {
                             LOGGER.error("Error while rendering thumbnail (" + dirEntry.getPath() + ")", ex);
                         }

@@ -38,10 +38,10 @@ public class GalleryEntry {
      * Thumbnail path relative to gallery root as String
      */
     private @Nullable
-    String thumbnailPath;
+    String thumbnailPathWeb;
 
     /**
      * Path relative to gallery root as String
      */
-    private String galleryPath;
+    private String galleryPathWeb;
 }

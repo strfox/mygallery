@@ -57,10 +57,10 @@
         </th:block>
         <div class="row">
             <th:block th:each="entry: ${entries}">
-                <a th:href="@{'?path='+${entry.getGalleryPath().toString()}}">
+                <a th:href="@{'?path='+${entry.getGalleryPathWeb()}}">
                     <div class="col-md-1 gallery-entry">
-                        <th:block th:with="has_thumbnail=${entry.getThumbnail64() != null}">
-                            <img th:if="${has_thumbnail}" th:src="'data:image/png;base64,' + ${entry.thumbnail64}"
+                        <th:block th:with="has_thumbnail=${entry.getThumbnailPathWeb() != null}">
+                            <img th:if="${has_thumbnail}" th:src="@{${entry.getThumbnailPathWeb()}}"
                                  alt="Thumbnail"/>
                             <th:block th:unless="${has_thumbnail}" th:switch="${entry.getType().name()}">
                                 <img th:case="'DIRECTORY'" th:src="@{/file-icons/folder.png}" alt="Folder"/>

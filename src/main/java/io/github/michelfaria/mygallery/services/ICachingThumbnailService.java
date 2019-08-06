@@ -16,22 +16,17 @@
  *
  */
 
-package io.github.michelfaria.mygallery.config;
+package io.github.michelfaria.mygallery.services;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
+import lombok.NonNull;
 
-import javax.validation.constraints.NotNull;
+import java.nio.file.Path;
+import java.util.Optional;
 
-@ConfigurationProperties(prefix = "mygallery")
-@Validated
-@Setter
-@Getter
-public class MyGalleryProperties {
-    @NotNull
-    private String galleryPath;
-    @NotNull
-    private Integer entriesPerPage;
+public interface ICachingThumbnailService {
+    /**
+     * Returns a static resource path to the thumbnail of the given path.
+     * Returns empty optional if thumbnail couldn't be created.
+     */
+    Optional<String> thumbnail(@NonNull Path securePath);
 }
