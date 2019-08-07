@@ -58,7 +58,7 @@ public class CachingThumbnailService implements ICachingThumbnailService {
     @PostConstruct
     public void init() throws Exception {
         thumbnailCachePath = Paths.get(properties.getGalleryPath()).resolve(THUMBNAIL_CACHE_FOLDERNAME);
-        refreshCache();
+        // refreshCache();
     }
 
     private void refreshCache() throws IOException {

@@ -21,9 +21,11 @@ package io.github.michelfaria.mygallery.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @ConfigurationProperties(prefix = "mygallery")
 @Validated
@@ -34,4 +36,10 @@ public class MyGalleryProperties {
     private String galleryPath;
     @NotNull
     private Integer entriesPerPage;
+    @Nullable
+    @Size(min = 1)
+    private String username;
+    @Nullable
+    @Size(min = 1)
+    private String password;
 }
