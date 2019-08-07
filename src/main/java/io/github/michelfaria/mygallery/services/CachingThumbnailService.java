@@ -56,15 +56,19 @@ public class CachingThumbnailService implements ICachingThumbnailService {
     private Path thumbnailCachePath = null;
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
         thumbnailCachePath = Paths.get(properties.getGalleryPath()).resolve(THUMBNAIL_CACHE_FOLDERNAME);
-        refreshCache();
+        new Thread(this::refreshCache).start();
     }
 
-    private void refreshCache() throws IOException {
+    private void refreshCache() {
         LOGGER.info("Refreshing thumbnail cache...");
         final var galleryPath = Paths.get(properties.getGalleryPath());
-        Files.walkFileTree(galleryPath, new ThumbnailCacheRefreshingVisitor());
+        try {
+            Files.walkFileTree(galleryPath, new ThumbnailCacheRefreshingVisitor());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -99,7 +103,7 @@ public class CachingThumbnailService implements ICachingThumbnailService {
                     .size(200, 200)
                     .toFile(destPath.toFile());
         } catch (UnsupportedFormatException ex) {
-            LOGGER.info("Cannot make thumbnail for {}, unsupported format", sourcePath);
+            LOGGER.debug("Cannot make thumbnail for {}, unsupported format", sourcePath);
         } catch (Exception ex) {
             LOGGER.debug(
                     String.format("Failed to make thumbnail of file '%s', would write to '%s'.", sourcePath, destPath),
@@ -132,7 +136,7 @@ public class CachingThumbnailService implements ICachingThumbnailService {
                                         .toString())
                                 + THUMBNAIL_EXTENSION);
                 if (Files.notExists(cachePathEquivalent)) {
-                    LOGGER.info("Making thumbnail of {}, writing to {}", file, cachePathEquivalent);
+                    LOGGER.debug("Making thumbnail of {}, writing to {}", file, cachePathEquivalent);
                     makeThumbnail(file, cachePathEquivalent);
                 } else {
                     LOGGER.debug("Skipping creation of thumbnail of file since thumbnail already cached: {}", file);
