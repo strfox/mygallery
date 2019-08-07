@@ -82,10 +82,21 @@
     </th:block>
     <th:block th:unless="${entries}"
               th:assert="${filePath} != null"
-              th:with="supportedImage=${filePath.matches('^.+\.(png|jpe?g|gif|svg|bmp)')}">
+              th:with="isImage=${filePath.matches('^.+\.(png|jpe?g|gif|svg|bmp)')},
+                       isFlash=${filePath.matches('^.+\.swf')},
+                       isVideo=${filePath.matches('^.+\.(avi|flv|wmv|mov|mp4|webm|3gp)')}">
         <!-- Display File -->
-        <img th:if="${supportedImage}" th:src="@{${filePath}}" alt="Image"/>
-        <span th:unless="${supportedImage}">File format not supported :(</span>
+        <img th:if="${isImage}" th:src="@{${filePath}}" alt="Image"/>
+        <video th:if="${isVideo}" controls>
+            <source th:src="@{${filePath}}"/>
+            Please update your browser to view this video.
+        </video>
+        <th:block th:if="${isFlash}">
+            <object width="1200" height="720">
+                <param name="movie" th:value="@{${filePath}}">
+                <embed th:src="@{${filePath}}">
+            </object>
+        </th:block>
     </th:block>
 </th:block>
 </body>
