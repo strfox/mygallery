@@ -21,6 +21,8 @@ package io.github.michelfaria.mygallery.services;
 import io.github.michelfaria.mygallery.enums.EntryType;
 import io.github.michelfaria.mygallery.exceptions.NotADirectoryException;
 import io.github.michelfaria.mygallery.models.DirectoryEntry;
+import io.github.michelfaria.mygallery.strategy.IFileNameShorteningStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,16 +37,24 @@ import static java.nio.file.Files.isRegularFile;
 
 @Service
 public class FileListingService implements IFileListingService {
+
+    @Autowired
+    private IFileNameShorteningStrategy fileNameShorteningStrategy;
+
     @Override
     public List<DirectoryEntry> listDir(Path path) throws IOException {
         if (!isDirectory(path)) {
             throw new NotADirectoryException("Provided path is not a directory.");
         }
         return Files.list(path)
-                .map(p -> new DirectoryEntry(
-                        p.getFileName().toString(),
-                        entryType(p),
-                        p))
+                .map(p -> {
+                    var filename = p.getFileName().toString();
+                    return new DirectoryEntry(
+                            filename,
+                            entryType(p),
+                            p,
+                            fileNameShorteningStrategy.shorten(filename));
+                })
                 .filter(p -> !p.getName().startsWith("."))
                 .collect(Collectors.toList());
     }

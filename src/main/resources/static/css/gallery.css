@@ -34,6 +34,11 @@ body {
 .main_container {
   background-color: #286090;
   border-radius: 10px;
+  padding: 10px 50px 100px;
+}
+
+.entries {
+  margin: 25px;
 }
 
 .gallery-entry {
@@ -43,6 +48,7 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  border-radius: 100px;
 }
 
 .gallery-entry:hover {
@@ -57,8 +63,8 @@ body {
 }
 
 .gallery-entry > span {
-  overflow-wrap: break-word;
-  color: whitesmoke;
+  color: rgba(255, 255, 255, 0.56);
+  word-break: break-all;
 }
 
 .tree-navigation {
@@ -69,6 +75,32 @@ body {
   color: #286090;
   content: "/ ";
   padding: 0 5px;
+}
+
+.page-number {
+  background-color: #65a2d6;
+  padding: 10px;
+  margin: 0 2px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.page-number:link {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.page-number:visited {
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.page-number.page-number-current {
+  background-color: #123757;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.media-display > img, .media-display > video {
+  height: 90vh;
 }
 
 /*# sourceMappingURL=gallery.css.map */

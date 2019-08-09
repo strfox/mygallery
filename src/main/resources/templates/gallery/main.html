@@ -48,19 +48,20 @@
             <th>
                 <span>Pages: </span>
                 <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <span th:if="${i == page}">
-                        [[${i}]]
+                    <span th:if="${i == page}"
+                          th:text="${i}"
+                          class="page-number page-number-current">
                     </span>
-                    <a th:unless="${i == page}" th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"
-                       th:inline="text">
-                        [[${i}]]
+                    <a th:unless="${i == page}"
+                       th:href="${urlBuilder.replaceQueryParam('page', i).toUriString()}"
+                       th:text="${i}"
+                       class="page-number">
                     </a>
-                    &nbsp;
                 </th:block>
             </th>
         </th:block>
         <!-- Entries -->
-        <div class="row">
+        <div class="row entries">
             <th:block th:each="entry: ${entries}">
                 <a th:href="@{'?path='+${entry.getGalleryPathWeb()}}">
                     <div class="col-md-1 gallery-entry">
@@ -72,7 +73,7 @@
                                 <img th:case="'FILE'" th:src="@{/file-icons/file.png}" alt="File"/>
                                 <img th:case="'OTHER'" th:src="@{/file-icons/file.png}" alt="Unknown"/>
                             </th:block>
-                            <span th:text="${entry.getName()}"></span>
+                            <span th:text="${entry.getShortenedName()}"></span>
                         </th:block>
                     </div>
                 </a>
@@ -86,17 +87,19 @@
                        isFlash=${filePath.matches('^.+\.swf')},
                        isVideo=${filePath.matches('^.+\.(avi|flv|wmv|mov|mp4|webm|3gp)')}">
         <!-- Display File -->
-        <img th:if="${isImage}" th:src="@{${filePath}}" alt="Image"/>
-        <video th:if="${isVideo}" controls>
-            <source th:src="@{${filePath}}"/>
-            Please update your browser to view this video.
-        </video>
-        <th:block th:if="${isFlash}">
-            <object width="1200" height="720">
-                <param name="movie" th:value="@{${filePath}}">
-                <embed th:src="@{${filePath}}">
-            </object>
-        </th:block>
+        <div class="media-display">
+            <img th:if="${isImage}" th:src="@{${filePath}}" alt="Image"/>
+            <video th:if="${isVideo}" controls>
+                <source th:src="@{${filePath}}"/>
+                Please update your browser to view this video.
+            </video>
+            <th:block th:if="${isFlash}">
+                <object width="1200" height="720">
+                    <param name="movie" th:value="@{${filePath}}">
+                    <embed th:src="@{${filePath}}">
+                </object>
+            </th:block>
+        </div>
     </th:block>
 </th:block>
 </body>

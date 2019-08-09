@@ -19,6 +19,9 @@
 $color-1: #123757;
 $color-2: #286090;
 $color-3: #65a2d6;
+$color-4: rgba(255, 255, 255, 0.56);
+
+$thumb-max-height: 300px;
 
 html, body {
   height: 100%;
@@ -39,6 +42,11 @@ body {
 .main_container {
   background-color: $color-2;
   border-radius: 10px;
+  padding: 10px 50px 100px;
+}
+
+.entries {
+  margin: 25px;
 }
 
 .gallery-entry {
@@ -48,6 +56,7 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  border-radius: 100px;
 }
 
 
@@ -57,14 +66,14 @@ body {
 }
 
 .gallery-entry img {
-  max-height: 300px;
+  max-height: $thumb-max-height;
   margin: 20px;
   display: block;
 }
 
 .gallery-entry > span {
-  overflow-wrap: break-word;
-  color: whitesmoke;
+  color: $color-4;
+  word-break: break-all;
 }
 
 .tree-navigation {
@@ -75,4 +84,30 @@ body {
   color: $color-2;
   content: "/ ";
   padding: 0 5px;
+}
+
+.page-number {
+  background-color: $color-3;
+  padding: 10px;
+  margin: 0 2px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.page-number:link {
+  text-decoration: none;
+  color: $color-4;
+}
+
+.page-number:visited {
+  color: $color-4;
+}
+
+.page-number.page-number-current {
+  background-color: $color-1;
+  color: $color-4;
+}
+
+.media-display > img, .media-display > video {
+  height: 90vh;
 }

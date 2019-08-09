@@ -33,4 +33,5 @@ public class DirectoryEntry {
     private String name;
     private EntryType type;
     private Path path;
+    private String shortenedName;
 }
