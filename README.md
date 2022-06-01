@@ -16,3 +16,7 @@ Example properties:
 Start the HTTP server on port 8080 by running:
 
     ./mvnw spring-boot:run
+
+## Screenshots
+
+![Screenshot](/screenshots/example1.webp)
